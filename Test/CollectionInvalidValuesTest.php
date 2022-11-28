@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test;
 
+use Collection\AbstractCollection;
 use Collection\Exception\InvalidCollectionItemTypeException;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +16,9 @@ final class CollectionInvalidValuesTest extends TestCase
     public function testAddMethodInvalidData(string $class, mixed $data): void
     {
         $this->expectException(InvalidCollectionItemTypeException::class);
-        (new $class())->add($data);
+        /** @var AbstractCollection $collection */
+        $collection = new $class();
+        $collection->add($data);
     }
 
     /**

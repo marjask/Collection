@@ -31,7 +31,7 @@ final class ArrayCollectionTest extends TestCase
 
         $this->assertSame(
             31,
-            $collection->reduce(static function (?int $curry, array $item): ?int {
+            $collection->reduce(static function (?int $curry, array $item): int|float {
                 return array_sum($item) + $curry;
             })
         );

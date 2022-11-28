@@ -13,6 +13,9 @@ use Traversable;
 
 abstract class AbstractCollection implements \IteratorAggregate, \Countable
 {
+    /**
+     * @var array<mixed, mixed>
+     */
     protected array $collection = [];
     private string $collectionType;
 
@@ -25,6 +28,9 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
         $this->throwIfInvalidCollectionType();
     }
 
+    /**
+     * @param array<mixed> $array
+     */
     public static function createFromArray(array $array): static
     {
         $collection = new static();
@@ -36,6 +42,9 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
         return $collection;
     }
 
+    /**
+     * @param array<int|string, mixed> $array
+     */
     public static function createFromAssocArray(array $array): static
     {
         $collection = new static();
@@ -88,6 +97,9 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
         return $this;
     }
 
+    /**
+     * @return array<int|string, mixed>
+     */
     final protected function getCollection(): array
     {
         return $this->collection;
@@ -118,12 +130,12 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
         return in_array($item, $this->collection, $strict);
     }
 
-    final public function hasNotElement($collectionItem): bool
+    final public function hasNotElement(mixed $collectionItem): bool
     {
         return !$this->hasElement($collectionItem);
     }
 
-    final public function first()
+    final public function first(): mixed
     {
         return reset($this->collection) ?: null;
     }
@@ -142,29 +154,32 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
         return $this;
     }
 
-    final public function last()
+    final public function last(): mixed
     {
         return !empty($this->collection)
             ? end($this->collection)
             : null;
     }
 
-    final public function pullFirst()
+    final public function pullFirst(): mixed
     {
         return array_shift($this->collection);
     }
 
-    final public function pullLast()
+    final public function pullLast(): mixed
     {
         return array_pop($this->collection);
     }
 
+    /**
+     * @return array<int|string, mixed>
+     */
     public function map(Closure $p): array
     {
         return array_map($p, $this->getCollection());
     }
 
-    final public function getByKey(string|int $key)
+    final public function getByKey(string|int $key): mixed
     {
         return $this->hasKey($key) ? $this->collection[$key] : null;
     }
@@ -199,6 +214,9 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
         return false;
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     public function column(string $keyOrPropertyOrMethod): array
     {
         $values = [];
@@ -229,6 +247,10 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
 
     public function merge(self $otherCollection, bool $overwriteKeys = false): static
     {
+        /**
+         * @var string|int $key
+         * @var mixed $item
+         */
         foreach ($otherCollection as $key => $item) {
             $this->add(
                 $item,
@@ -239,7 +261,7 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
         return $this;
     }
 
-    final public function reduce(callable $callback, $initial = null): mixed
+    final public function reduce(callable $callback, mixed $initial = null): mixed
     {
         return array_reduce($this->getCollection(), $callback, $initial);
     }

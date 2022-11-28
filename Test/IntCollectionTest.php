@@ -33,7 +33,7 @@ final class IntCollectionTest extends TestCase
 
         $this->assertSame(
             13,
-            $collection->reduce(static function (?int $curry, int $item): ?int {
+            $collection->reduce(static function (?int $curry, int $item): int {
                 return $item + $curry;
             })
         );

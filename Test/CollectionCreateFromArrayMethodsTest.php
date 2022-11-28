@@ -11,6 +11,8 @@ final class CollectionCreateFromArrayMethodsTest extends TestCase
 {
     /**
      * @dataProvider \Test\Provider\CollectionCreateFromArrayMethodsProviderData::staticCreateFromArrayData
+     * @param array<mixed> $data
+     * @param class-string $expectedClass
      */
     public function testStaticCreateFromArray(
         array      $data,
@@ -41,6 +43,8 @@ final class CollectionCreateFromArrayMethodsTest extends TestCase
 
     /**
      * @dataProvider \Test\Provider\CollectionCreateFromArrayMethodsProviderData::staticCreateFromStaticArrayData
+     * @param array<mixed> $data
+     * @param class-string $expectedClass
      */
     public function testStaticCreateFromAssocArray(
         array      $data,
@@ -69,6 +73,9 @@ final class CollectionCreateFromArrayMethodsTest extends TestCase
         );
     }
 
+    /**
+     * @param class-string $expectedClass
+     */
     private function runTestCollection(
         AbstractCollection $collection,
         mixed $expectedFirstElement,
