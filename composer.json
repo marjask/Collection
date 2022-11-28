@@ -1,0 +1,33 @@
+{
+  "name": "marjask/collection",
+  "description": "Flexible abstract collection",
+  "minimum-stability": "stable",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^6.1",
+    "phpunit/phpunit": "^9.5",
+    "phpstan/phpstan": "^1.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "Collection\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Test\\": "Test"
+    }
+  },
+  "scripts": {
+    "tests": [
+      "php vendor/bin/phpunit Test"
+    ],
+    "phpstan": [
+      "php vendor/bin/phpstan"
+    ]
+  }
+}
