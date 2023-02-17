@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Collection;
 
-use Closure;
 use Collection\Exception\InvalidCollectionItemTypeException;
 use Collection\Exception\InvalidCollectionTypeException;
 use Collection\Exception\NotFoundIndicatedKeyException;
@@ -137,19 +136,23 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
 
     final public function first(): mixed
     {
-        return reset($this->collection) ?: null;
+        if (empty($this->collection)) {
+            return null;
+        }
+
+        return reset($this->collection);
     }
 
-    final protected function sort(Closure $closure): self
+    final public function sort(callable $callback): self
     {
-        usort($this->collection, $closure);
+        usort($this->collection, $callback);
 
         return $this;
     }
 
-    final public function filter(Closure $closure): self
+    final public function filter(callable $callable): self
     {
-        $this->collection = array_filter($this->collection, $closure);
+        $this->collection = array_filter($this->collection, $callable);
 
         return $this;
     }
@@ -174,7 +177,7 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
     /**
      * @return array<int|string, mixed>
      */
-    public function map(Closure $p): array
+    public function map(callable $p): array
     {
         return array_map($p, $this->getCollection());
     }
@@ -217,7 +220,7 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
     /**
      * @return array<int, mixed>
      */
-    public function column(string $keyOrPropertyOrMethod): array
+    public function column(int|string $keyOrPropertyOrMethod): array
     {
         $values = [];
 
@@ -227,7 +230,7 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
                 continue;
             }
 
-            if (is_object($item)) {
+            if (is_object($item) && is_string($keyOrPropertyOrMethod)) {
                 if (property_exists($item, $keyOrPropertyOrMethod)) {
                     $values[] = $item->$keyOrPropertyOrMethod;
                     continue;
